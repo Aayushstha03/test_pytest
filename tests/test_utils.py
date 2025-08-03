@@ -1,5 +1,9 @@
-# test_sample.py
+import sys
+import os
+
+sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), "..")))
 import pytest
+import app.utils
 
 
 # Using the shared fixture
@@ -57,45 +61,18 @@ def test_another_expected_failure():
 
 
 # Example of monkeypatching
-def fetch_data_from_api():
-    # Simulate a function that fetches data from an external API
-    return {"data": "real data"}
-
-
 def test_fetch_data(monkeypatch):
-    # Define a mock function to replace the original function
     def mock_fetch_data():
         return {"data": "mock data"}
 
-    # Use monkeypatch to replace the original function with the mock
-    monkeypatch.setattr("test_sample.fetch_data_from_api", mock_fetch_data)
-
-    # Call the function and assert the expected outcome
-    result = fetch_data_from_api()
+    monkeypatch.setattr("app.utils.fetch_data_from_api", mock_fetch_data)
+    result = app.utils.fetch_data_from_api()
     assert result == {"data": "mock data"}
-
-
-# Example of using temporary files
-def write_to_file(file_path, content):
-    with open(file_path, "w") as f:
-        f.write(content)
-
-
-def read_from_file(file_path):
-    with open(file_path, "r") as f:
-        return f.read()
 
 
 @pytest.mark.temporary
 def test_temp_file(tmp_path):
-    # Create a temporary file
     temp_file = tmp_path / "temp_file.txt"
-
-    # Write to the temporary file
-    write_to_file(temp_file, "Hello, World!")
-
-    # Read from the temporary file
-    content = read_from_file(temp_file)
-
-    # Assert the content is as expected
+    app.utils.write_to_file(temp_file, "Hello, World!")
+    content = app.utils.read_from_file(temp_file)
     assert content == "Hello, World!"
