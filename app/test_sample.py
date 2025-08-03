@@ -73,3 +73,29 @@ def test_fetch_data(monkeypatch):
     # Call the function and assert the expected outcome
     result = fetch_data_from_api()
     assert result == {"data": "mock data"}
+
+
+# Example of using temporary files
+def write_to_file(file_path, content):
+    with open(file_path, "w") as f:
+        f.write(content)
+
+
+def read_from_file(file_path):
+    with open(file_path, "r") as f:
+        return f.read()
+
+
+@pytest.mark.temporary
+def test_temp_file(tmp_path):
+    # Create a temporary file
+    temp_file = tmp_path / "temp_file.txt"
+
+    # Write to the temporary file
+    write_to_file(temp_file, "Hello, World!")
+
+    # Read from the temporary file
+    content = read_from_file(temp_file)
+
+    # Assert the content is as expected
+    assert content == "Hello, World!"

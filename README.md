@@ -14,4 +14,7 @@ pytest -m xfail
 #  run tests that are not marked as expected to fail
 pytest -m "not xfail"
 
+# temp file
+pytest -m temporary
+
 ```
