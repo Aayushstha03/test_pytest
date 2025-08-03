@@ -1,9 +1,5 @@
-import sys
-import os
-
-sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), "..")))
 import pytest
-import app.utils
+import src.main
 
 
 # Using the shared fixture
@@ -65,14 +61,14 @@ def test_fetch_data(monkeypatch):
     def mock_fetch_data():
         return {"data": "mock data"}
 
-    monkeypatch.setattr("app.utils.fetch_data_from_api", mock_fetch_data)
-    result = app.utils.fetch_data_from_api()
+    monkeypatch.setattr("src.main.fetch_data_from_api", mock_fetch_data)
+    result = src.main.fetch_data_from_api()
     assert result == {"data": "mock data"}
 
 
 @pytest.mark.temporary
 def test_temp_file(tmp_path):
     temp_file = tmp_path / "temp_file.txt"
-    app.utils.write_to_file(temp_file, "Hello, World!")
-    content = app.utils.read_from_file(temp_file)
+    src.main.write_to_file(temp_file, "Hello, World!")
+    content = src.main.read_from_file(temp_file)
     assert content == "Hello, World!"
